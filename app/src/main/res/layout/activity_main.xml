@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--suppress AndroidUnknownAttribute -->
     <data class=".SearchBinding">
@@ -25,7 +26,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:visible="@{viewModel.empty}" />
+            app:visible="@{viewModel.empty}"
+            tools:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/progress"
@@ -35,7 +37,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:visible="@{viewModel.loading}" />
+            app:visible="@{viewModel.loading}"
+            tools:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/restaurantsList"
@@ -45,6 +48,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_search" />
     </android.support.constraint.ConstraintLayout>
 </layout>

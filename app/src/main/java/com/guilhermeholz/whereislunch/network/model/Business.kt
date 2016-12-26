@@ -2,7 +2,7 @@ package com.guilhermeholz.whereislunch.network.model
 
 import com.google.gson.annotations.SerializedName
 
-class Business(@SerializedName("rating") val rating: Double,
+class Business(@SerializedName("rating") val rating: Float,
                @SerializedName("price") val price: String,
                @SerializedName("phone") val phone: String,
                @SerializedName("id") val id: String,
@@ -14,4 +14,4 @@ class Business(@SerializedName("rating") val rating: Double,
                @SerializedName("coordinates") val coordinates: Coordinates,
                @SerializedName("image_url") val imageUrl: String,
                @SerializedName("location") val location: Location,
-               @SerializedName("distance") val distance: Double)
+               @SerializedName("distance") val distance: Float)

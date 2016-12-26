@@ -38,6 +38,9 @@ dependencies {
     compile "com.android.support:appcompat-v7:$android_support_version"
     compile "com.android.support:recyclerview-v7:$android_support_version"
 
+    // Play Services
+    compile "com.google.android.gms:play-services-location:$play_services_version"
+
     // Constraint layout
     compile "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
