@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Where\'s Lunch?</string>
+    <string name="message_nor_restaurants">No restaurants nearby\n=(</string>
+</resources>
