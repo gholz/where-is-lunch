@@ -1,4 +1,4 @@
-package com.guilhermeholz.whereslunch
+package com.guilhermeholz.whereislunch
 
 import android.app.Application
 

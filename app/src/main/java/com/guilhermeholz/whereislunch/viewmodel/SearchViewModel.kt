@@ -1,4 +1,4 @@
-package com.guilhermeholz.whereslunch.viewmodel
+package com.guilhermeholz.whereislunch.viewmodel
 
 import android.databinding.BaseObservable
 import android.databinding.ObservableBoolean

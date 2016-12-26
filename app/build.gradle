@@ -5,7 +5,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "24.0.1"
     defaultConfig {
-        applicationId "com.guilhermeholz.whereslunch"
+        applicationId "com.guilhermeholz.whereislunch"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
@@ -50,6 +50,14 @@ dependencies {
     // Rx
     compile "io.reactivex:rxandroid:1.2.1"
     compile "io.reactivex:rxjava:1.2.4"
+
+    // Retrofit
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    // Glide
+    compile "com.github.bumptech.glide:glide:3.7.0"
 
     // Unit tests
     testCompile "junit:junit:4.12"

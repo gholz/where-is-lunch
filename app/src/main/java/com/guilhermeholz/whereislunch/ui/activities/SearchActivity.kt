@@ -1,11 +1,11 @@
-package com.guilhermeholz.whereslunch.ui.activities
+package com.guilhermeholz.whereislunch.ui.activities
 
 import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.guilhermeholz.whereslunch.R
-import com.guilhermeholz.whereslunch.SearchBinding
-import com.guilhermeholz.whereslunch.viewmodel.SearchViewModel
+import com.guilhermeholz.whereislunch.R
+import com.guilhermeholz.whereislunch.SearchBinding
+import com.guilhermeholz.whereislunch.viewmodel.SearchViewModel
 
 class SearchActivity : AppCompatActivity() {
 
