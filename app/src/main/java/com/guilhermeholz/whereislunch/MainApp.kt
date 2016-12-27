@@ -9,11 +9,14 @@ import com.guilhermeholz.whereislunch.di.NetworkModule
 class MainApp : Application() {
 
     companion object {
-        val component: AppComponent by lazy {
-            DaggerAppComponent.builder()
-                    .androidModule(AndroidModule())
-                    .networkModule(NetworkModule())
-                    .build()
-        }
+        lateinit var component: AppComponent
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        component = DaggerAppComponent.builder()
+                .androidModule(AndroidModule(this))
+                .networkModule(NetworkModule())
+                .build()
     }
 }

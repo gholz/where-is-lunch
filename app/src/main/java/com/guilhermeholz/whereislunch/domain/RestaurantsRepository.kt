@@ -9,8 +9,8 @@ import rx.Observable
 /**
  * Created by fenrir on 26/12/16.
  */
-class RestaurantsRepository(val network: RestaurantsDataSource) {
+class RestaurantsRepository(val dataSource: RestaurantsDataSource) {
     fun getRestaurants(location: Location): Observable<List<Restaurant>> {
-        return network.getRestaurants(location)
+        return dataSource.getRestaurants(location)
     }
 }

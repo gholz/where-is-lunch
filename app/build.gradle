@@ -1,9 +1,10 @@
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
+apply from: "../keys.gradle"
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.2"
     defaultConfig {
         applicationId "com.guilhermeholz.whereislunch"
         minSdkVersion 15
@@ -11,6 +12,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "YELP_CLIENT_ID", yelp_client_id)
+        buildConfigField("String", "YELP_SECRET_KEY", yelp_secret_key)
     }
     buildTypes {
         release {
