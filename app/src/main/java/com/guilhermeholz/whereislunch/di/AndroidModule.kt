@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.guilhermeholz.whereislunch.domain.RestaurantsRepository
 import com.guilhermeholz.whereislunch.domain.datasource.RestaurantsDataSource
-import com.guilhermeholz.whereislunch.domain.datasource.RestaurantsNetworkDataSource
 import com.guilhermeholz.whereislunch.network.YelpApi
+import com.guilhermeholz.whereislunch.network.datasource.RestaurantsNetworkDataSource
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

@@ -1,6 +1,7 @@
 package com.guilhermeholz.whereislunch.network.model
 
 import com.google.gson.annotations.SerializedName
+import android.location.Location as AndroidLocation
 
 class BusinessDetail(@SerializedName("id") val id: String,
                      @SerializedName("name") val name: String,
@@ -9,7 +10,7 @@ class BusinessDetail(@SerializedName("id") val id: String,
                      @SerializedName("is_closed") val isClosed: Boolean,
                      @SerializedName("url") val url: String,
                      @SerializedName("price") val price: String,
-                     @SerializedName("rating") val rating: Double,
+                     @SerializedName("rating") val rating: Float,
                      @SerializedName("review_count") val reviewCount: Int,
                      @SerializedName("phone") val phone: String,
                      @SerializedName("photos") val photos: List<String>,

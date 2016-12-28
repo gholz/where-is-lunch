@@ -8,6 +8,7 @@ import com.guilhermeholz.whereislunch.R
 import com.guilhermeholz.whereislunch.SearchBinding
 import com.guilhermeholz.whereislunch.domain.model.Restaurant
 import com.guilhermeholz.whereislunch.ui.adapters.SearchListAdapter
+import com.guilhermeholz.whereislunch.utils.isNotTheSameAs
 import com.guilhermeholz.whereislunch.view.SearchView
 import com.guilhermeholz.whereislunch.viewmodel.SearchViewModel
 
@@ -15,6 +16,7 @@ class SearchActivity : LocationActivity(), SearchView {
 
     private val viewModel by lazy { SearchViewModel(this) }
     private val adapter by lazy { SearchListAdapter(this) }
+    private var previousLocation: Location? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +31,11 @@ class SearchActivity : LocationActivity(), SearchView {
     }
 
     override fun onLocationChanged(location: Location?) {
-        if (location != null) {
-            viewModel.loadRestaurants(location)
+        location?.let {
+            if (it.isNotTheSameAs(previousLocation)) {
+                viewModel.loadRestaurants(it)
+                previousLocation = location
+            }
         }
     }
 

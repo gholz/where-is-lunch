@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Where\'s Lunch?</string>
     <string name="message_nor_restaurants">No restaurants nearby\n=(</string>
+    <string name="label_casting_your_vote">Casting your vote…</string>
 </resources>

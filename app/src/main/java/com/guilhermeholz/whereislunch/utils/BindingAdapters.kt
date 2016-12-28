@@ -11,6 +11,6 @@ fun setVisible(view: View, isVisible: Boolean) {
 }
 
 @BindingAdapter("bind:imageUrl")
-fun loadImage(view: ImageView, url: String) {
+fun loadImage(view: ImageView, url: String?) {
     Glide.with(view.context).load(url).crossFade().into(view)
 }

@@ -38,11 +38,10 @@ class SearchListAdapter(context: Context) : RecyclerView.Adapter<SearchListAdapt
 
     inner class SearchItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        val viewModel: SearchItemViewModel = SearchItemViewModel()
-        val binding: SearchItemBinding
+        val viewModel: SearchItemViewModel = SearchItemViewModel(view.context)
+        val binding: SearchItemBinding = DataBindingUtil.bind(view)
 
         init {
-            binding = DataBindingUtil.bind(view)
             binding.viewModel = viewModel
         }
 
