@@ -1,8 +1,8 @@
 package com.guilhermeholz.whereislunch.network
 
-import com.guilhermeholz.whereislunch.network.model.AuthResponse
-import com.guilhermeholz.whereislunch.network.model.BusinessDetail
-import com.guilhermeholz.whereislunch.network.model.SearchResponse
+import com.guilhermeholz.whereislunch.network.model.yelp.AuthResponse
+import com.guilhermeholz.whereislunch.network.model.yelp.BusinessDetail
+import com.guilhermeholz.whereislunch.network.model.yelp.SearchResponse
 import retrofit2.http.*
 import rx.Observable
 

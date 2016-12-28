@@ -1,4 +1,4 @@
-package com.guilhermeholz.whereislunch.network.model
+package com.guilhermeholz.whereislunch.network.model.yelp
 
 import com.google.gson.annotations.SerializedName
 import android.location.Location as AndroidLocation
