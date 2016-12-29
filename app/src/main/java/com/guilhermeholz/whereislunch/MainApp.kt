@@ -5,6 +5,7 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import com.guilhermeholz.whereislunch.android.receivers.ChampionAlarmReceiver
 import com.guilhermeholz.whereislunch.di.AndroidModule
 import com.guilhermeholz.whereislunch.di.AppComponent
@@ -12,6 +13,7 @@ import com.guilhermeholz.whereislunch.di.DaggerAppComponent
 import com.guilhermeholz.whereislunch.di.NetworkModule
 import com.jakewharton.threetenabp.AndroidThreeTen
 import java.util.*
+import javax.inject.Inject
 
 class MainApp : Application() {
 
@@ -19,12 +21,20 @@ class MainApp : Application() {
         lateinit var component: AppComponent
     }
 
+    @Inject
+    lateinit var preferences:SharedPreferences
+
     override fun onCreate() {
         super.onCreate()
         component = DaggerAppComponent.builder()
                 .androidModule(AndroidModule(this))
                 .networkModule(NetworkModule())
                 .build()
+        init()
+    }
+
+    private fun init() {
+        component.inject(this)
         AndroidThreeTen.init(this)
         scheduleAlarm()
     }

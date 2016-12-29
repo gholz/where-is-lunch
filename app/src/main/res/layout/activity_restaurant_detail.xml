@@ -94,6 +94,20 @@
             tools:text="Vote (5)"
             tools:visibility="gone" />
 
+        <TextView
+            android:id="@+id/closedVotingWarning"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/message_closed_voting"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="@+id/title"
+            app:layout_constraintRight_toRightOf="@+id/title"
+            app:layout_constraintTop_toBottomOf="@+id/voteButton"
+            app:visible="@{viewModel.isVotingClosed}" />
+
         <ProgressBar
             android:id="@+id/votingProgress"
             style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"

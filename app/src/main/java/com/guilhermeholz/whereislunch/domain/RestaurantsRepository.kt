@@ -28,10 +28,10 @@ class RestaurantsRepository(val dataSource: RestaurantsDataSource, val preferenc
         return dataSource.vote(restaurant.id, currentDate)
     }
 
-    fun canVote(id: String): Boolean {
-        val limit = LocalTime.NOON.plusHours(1)
-        return !LocalTime.now().isAfter(limit) && !preferences.contains(id + getCurrentDate())
-    }
+    fun canVote(id: String): Boolean = !isVotingClosed() && !preferences.contains(id + getCurrentDate())
+
+    fun isVotingClosed(): Boolean = LocalTime.now().isAfter(LocalTime.NOON.plusHours(1))
 
     private fun getCurrentDate() = formatter.format(LocalDate.now())
+
 }

@@ -8,18 +8,12 @@ import com.guilhermeholz.whereislunch.MainApp
 import com.guilhermeholz.whereislunch.domain.RestaurantsRepository
 import com.guilhermeholz.whereislunch.domain.model.RestaurantDetail
 import com.guilhermeholz.whereislunch.utils.logError
+import org.threeten.bp.LocalTime
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import javax.inject.Inject
 
 class RestaurantDetailViewModel : BaseObservable() {
-
-    @Inject
-    lateinit var repository: RestaurantsRepository
-
-    init {
-        MainApp.component.inject(this)
-    }
 
     val title: ObservableField<String> = ObservableField()
     val image: ObservableField<String> = ObservableField()
@@ -30,8 +24,16 @@ class RestaurantDetailViewModel : BaseObservable() {
     val loading: ObservableBoolean = ObservableBoolean(true)
     val voting: ObservableBoolean = ObservableBoolean(false)
     val canVote: ObservableBoolean = ObservableBoolean(false)
+    val isVotingClosed: ObservableBoolean = ObservableBoolean(false)
+
+    @Inject
+    lateinit var repository: RestaurantsRepository
 
     private var restaurant: RestaurantDetail? = null
+
+    init {
+        MainApp.component.inject(this)
+    }
 
     fun loadRestaurant(id: String) {
         canVote.set(repository.canVote(id))
@@ -71,6 +73,7 @@ class RestaurantDetailViewModel : BaseObservable() {
         phone.set("${restaurant.phone.substring(0..2)} ${restaurant.phone.substring(2)}")
         rating.set(restaurant.rating)
         votingLabel.set("Vote (${restaurant.votes})")
+        isVotingClosed.set(repository.isVotingClosed())
         this.restaurant = restaurant
     }
 }
