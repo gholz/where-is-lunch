@@ -25,5 +25,15 @@
         <activity
             android:name=".ui.activities.RestaurantDetailActivity"
             android:screenOrientation="portrait" />
+
+        <service
+            android:name="com.guilhermeholz.whereislunch.android.services.GetChampionService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".android.receivers.ChampionAlarmReceiver" />
     </application>
 </manifest>

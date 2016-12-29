@@ -11,6 +11,7 @@ import com.guilhermeholz.whereislunch.network.YelpApi
 import com.guilhermeholz.whereislunch.network.model.votes.Vote
 import com.guilhermeholz.whereislunch.network.model.votes.VotesResponse
 import com.guilhermeholz.whereislunch.network.model.yelp.AuthResponse
+import com.guilhermeholz.whereislunch.network.model.yelp.BusinessDetail
 import com.guilhermeholz.whereislunch.network.model.yelp.SearchResponse
 import rx.Observable
 import java.util.*
@@ -27,35 +28,51 @@ class RestaurantsNetworkDataSource(val yelpApi: YelpApi, val votingApi: VotingAp
         authHeader = preferences.getString(authHeaderKey, "")
     }
 
-    override fun getRestaurants(location: Location): Observable<List<Restaurant>> {
-        return if (isAuthenticated()) {
-            authenticate().flatMap { searchByLocation(location) }
+    override fun getRestaurants(location: Location, date: String): Observable<List<Restaurant>> {
+        return if (!isAuthenticated()) {
+            authenticate().flatMap {
+                store(it)
+                searchByLocation(location, date)
+            }
         } else {
-            searchByLocation(location)
+            searchByLocation(location, date)
         }
     }
 
-    override fun getRestaurant(id: String): Observable<RestaurantDetail> {
-        return if (isAuthenticated()) {
-            authenticate().flatMap { getRestaurantById(id) }
+    override fun getRestaurant(id: String, date: String): Observable<RestaurantDetail> {
+        return if (!isAuthenticated()) {
+            authenticate().flatMap {
+                store(it)
+                getRestaurantById(id, date)
+            }
         } else {
-            getRestaurantById(id)
+            getRestaurantById(id, date)
         }
+    }
+
+    override fun vote(id: String, date: String): Observable<RestaurantDetail> {
+        return votingApi.vote(id, date).flatMap { getRestaurant(id, date) }
     }
 
     private fun isAuthenticated(): Boolean = !authHeader.isEmpty() && expiration < Date().time
 
-    private fun getRestaurantById(id: String): Observable<RestaurantDetail> {
-        return yelpApi.getBusinessDetail(authHeader, id).map {
-            RestaurantDetail(it.name, it.phone, it.imageUrl, it.rating,
-                    "${it.location.address1}, ${it.location.city} ${it.location.country}", 0)
-        }
+    private fun getRestaurantById(id: String, date: String): Observable<RestaurantDetail> {
+        return yelpApi.getBusinessDetail(authHeader, id)
+                .zipWith(votingApi.getVotesById(id, date)) {
+                    business, vote ->
+                    RestaurantDetail(business.id,
+                            business.name,
+                            business.phone,
+                            business.imageUrl,
+                            business.rating,
+                            getAddressLine(business),
+                            vote.amount)
+                }
     }
 
     private fun authenticate() = yelpApi.getAuthToken("client_credentials",
             BuildConfig.YELP_CLIENT_ID,
             BuildConfig.YELP_SECRET_KEY)
-            .doOnNext { store(it) }
 
     private fun store(authentication: AuthResponse) {
         authHeader = "Bearer ${authentication.accessToken}"
@@ -65,15 +82,24 @@ class RestaurantsNetworkDataSource(val yelpApi: YelpApi, val votingApi: VotingAp
                 .apply()
     }
 
-    private fun searchByLocation(location: Location): Observable<List<Restaurant>> {
+    private fun searchByLocation(location: Location, date: String): Observable<List<Restaurant>> {
         return yelpApi.search(authHeader, location.latitude, location.longitude)
-                .zipWith(votingApi.getVotes(""), { x, y -> combine(x, y) })
+                .zipWith(votingApi.getVotes(date), {
+                    business, votes ->
+                    combine(business, votes).sortedByDescending(Restaurant::votes)
+                })
     }
+
+    private fun getAddressLine(business: BusinessDetail) = "${business.location.address1}, ${business.location.city} ${business.location.country}"
 
     private fun combine(searchResponse: SearchResponse, votesResponse: VotesResponse): List<Restaurant> {
         val votes = votesResponse.votes.associateBy(Vote::id)
         return searchResponse.businesses.map {
-            Restaurant(it.id, it.name, it.imageUrl, it.rating, votes[it.id]?.amount ?: 0)
-        }.sortedBy(Restaurant::votes)
+            Restaurant(it.id,
+                    it.name,
+                    it.imageUrl,
+                    it.rating,
+                    votes[it.id]?.amount ?: 0)
+        }
     }
 }

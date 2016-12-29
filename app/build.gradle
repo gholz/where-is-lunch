@@ -45,6 +45,9 @@ dependencies {
     // Play Services
     compile "com.google.android.gms:play-services-location:$play_services_version"
 
+    // Job scheduler
+    compile "com.firebase:firebase-jobdispatcher:0.5.2"
+
     // Constraint layout
     compile "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
@@ -65,6 +68,9 @@ dependencies {
 
     // Glide
     compile "com.github.bumptech.glide:glide:3.7.0"
+
+    // Dates
+    compile "com.jakewharton.threetenabp:threetenabp:1.0.4"
 
     // Unit tests
     testCompile "junit:junit:4.12"

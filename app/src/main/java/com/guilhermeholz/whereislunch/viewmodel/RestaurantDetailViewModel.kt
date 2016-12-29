@@ -29,11 +29,12 @@ class RestaurantDetailViewModel : BaseObservable() {
     val rating: ObservableFloat = ObservableFloat()
     val loading: ObservableBoolean = ObservableBoolean(true)
     val voting: ObservableBoolean = ObservableBoolean(false)
-    val canVote: ObservableBoolean = ObservableBoolean(true)
+    val canVote: ObservableBoolean = ObservableBoolean(false)
 
     private var restaurant: RestaurantDetail? = null
 
     fun loadRestaurant(id: String) {
+        canVote.set(repository.canVote(id))
         repository.getRestaurant(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -1,5 +1,6 @@
 package com.guilhermeholz.whereislunch.di
 
+import com.guilhermeholz.whereislunch.network.VotingApi
 import com.guilhermeholz.whereislunch.network.YelpApi
 import dagger.Module
 import dagger.Provides
@@ -18,5 +19,15 @@ class NetworkModule {
                 .baseUrl("https://api.yelp.com")
                 .build()
                 .create(YelpApi::class.java)
+    }
+
+    @Provides @Singleton
+    fun provideVotingApi(): VotingApi {
+        return Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl("http://192.168.0.108/whereislunch/api/")
+                .build()
+                .create(VotingApi::class.java)
     }
 }

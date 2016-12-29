@@ -13,12 +13,8 @@ import com.guilhermeholz.whereislunch.viewmodel.SearchItemViewModel
 
 class SearchListAdapter(context: Context) : RecyclerView.Adapter<SearchListAdapter.SearchItemViewHolder>() {
 
-    val inflater: LayoutInflater
+    val inflater: LayoutInflater = LayoutInflater.from(context)
     val items: MutableList<Restaurant> = mutableListOf()
-
-    init {
-        inflater = LayoutInflater.from(context)
-    }
 
     override fun onBindViewHolder(holder: SearchItemViewHolder?, position: Int) {
         holder?.bind(items[position])
@@ -31,9 +27,14 @@ class SearchListAdapter(context: Context) : RecyclerView.Adapter<SearchListAdapt
     }
 
     fun setItems(restaurants: List<Restaurant>) {
+        val change = restaurants.size == items.size
         items.clear()
         items.addAll(restaurants)
-        notifyDataSetChanged()
+        if (change) {
+            notifyItemRangeChanged(0, restaurants.size)
+        } else {
+            notifyDataSetChanged()
+        }
     }
 
     inner class SearchItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {

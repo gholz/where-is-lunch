@@ -1,5 +1,6 @@
 package com.guilhermeholz.whereislunch.ui.activities
 
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.location.Location
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.guilhermeholz.whereislunch.R
 import com.guilhermeholz.whereislunch.SearchBinding
 import com.guilhermeholz.whereislunch.domain.model.Restaurant
+import com.guilhermeholz.whereislunch.domain.model.RestaurantDetail
 import com.guilhermeholz.whereislunch.ui.adapters.SearchListAdapter
 import com.guilhermeholz.whereislunch.utils.isNotTheSameAs
 import com.guilhermeholz.whereislunch.view.SearchView
@@ -16,27 +18,37 @@ class SearchActivity : LocationActivity(), SearchView {
 
     private val viewModel by lazy { SearchViewModel(this) }
     private val adapter by lazy { SearchListAdapter(this) }
-    private var previousLocation: Location? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBinding()
+        checkForDeepLink()
+    }
+
+    private fun checkForDeepLink() {
+        val pendingId = intent?.extras?.getString(RestaurantDetailActivity.idExtraKey)
+        pendingId?.let {
+            val intent = Intent(this, RestaurantDetailActivity::class.java)
+            intent.putExtra(RestaurantDetailActivity.idExtraKey, it)
+            startActivity(intent)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.onStart()
     }
 
     private fun initBinding() {
         val binding: SearchBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.restaurantsList.layoutManager = LinearLayoutManager(this)
         binding.restaurantsList.adapter = adapter
+        binding.restaurantsList.itemAnimator = null
         binding.viewModel = viewModel
     }
 
     override fun onLocationChanged(location: Location?) {
-        location?.let {
-            if (it.isNotTheSameAs(previousLocation)) {
-                viewModel.loadRestaurants(it)
-                previousLocation = location
-            }
-        }
+        location?.let { viewModel.loadRestaurants(it) }
     }
 
     override fun displayRestaurants(restaurants: List<Restaurant>) {
