@@ -73,9 +73,15 @@ class RestaurantsNetworkDataSource(val yelpApi: YelpApi, val votingApi: VotingAp
 
     override fun getWinner(date: String): Observable<RestaurantDetail> {
         var votes: Int = 0
+        var id: String
         return votingApi.getWinner(date).flatMap {
             votes = it.amount
-            yelpApi.getBusinessDetail(it.id, date)
+            id = it.id
+            if (!isAuthenticated()) {
+                authenticate().flatMap { yelpApi.getBusinessDetail(authHeader, id) }
+            } else {
+                yelpApi.getBusinessDetail(authHeader, id)
+            }
         }.map {
             RestaurantDetail(it.id,
                     it.name,
@@ -88,7 +94,7 @@ class RestaurantsNetworkDataSource(val yelpApi: YelpApi, val votingApi: VotingAp
     }
 
     @VisibleForTesting
-    fun authenticate()  = yelpApi.getAuthToken("client_credentials", BuildConfig.YELP_CLIENT_ID, BuildConfig.YELP_SECRET_KEY)
+    fun authenticate() = yelpApi.getAuthToken("client_credentials", BuildConfig.YELP_CLIENT_ID, BuildConfig.YELP_SECRET_KEY)
 
     private fun store(authentication: AuthResponse) {
         authHeader = "Bearer ${authentication.accessToken}"
