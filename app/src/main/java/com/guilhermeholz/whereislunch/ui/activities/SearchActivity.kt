@@ -5,22 +5,26 @@ import android.databinding.DataBindingUtil
 import android.location.Location
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import com.guilhermeholz.whereislunch.MainApp
 import com.guilhermeholz.whereislunch.R
 import com.guilhermeholz.whereislunch.SearchBinding
 import com.guilhermeholz.whereislunch.domain.model.Restaurant
-import com.guilhermeholz.whereislunch.domain.model.RestaurantDetail
 import com.guilhermeholz.whereislunch.ui.adapters.SearchListAdapter
-import com.guilhermeholz.whereislunch.utils.isNotTheSameAs
 import com.guilhermeholz.whereislunch.view.SearchView
 import com.guilhermeholz.whereislunch.viewmodel.SearchViewModel
+import javax.inject.Inject
 
 class SearchActivity : LocationActivity(), SearchView {
 
-    private val viewModel by lazy { SearchViewModel(this) }
+    @Inject
+    lateinit var viewModel: SearchViewModel
+
     private val adapter by lazy { SearchListAdapter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MainApp.component.inject(this)
+        viewModel.view = this
         initBinding()
         checkForDeepLink()
     }

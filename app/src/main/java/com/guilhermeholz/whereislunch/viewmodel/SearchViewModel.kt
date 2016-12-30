@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import android.databinding.BaseObservable
 import android.databinding.ObservableBoolean
 import android.location.Location
-import com.guilhermeholz.whereislunch.MainApp
+import android.support.annotation.VisibleForTesting
 import com.guilhermeholz.whereislunch.domain.RestaurantsRepository
 import com.guilhermeholz.whereislunch.utils.isNotTheSameAs
 import com.guilhermeholz.whereislunch.utils.logError
@@ -12,24 +12,18 @@ import com.guilhermeholz.whereislunch.utils.toSimpleString
 import com.guilhermeholz.whereislunch.view.SearchView
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
-import javax.inject.Inject
 
-class SearchViewModel(val view: SearchView) : BaseObservable() {
+class SearchViewModel(val preferences: SharedPreferences,
+                      val repository: RestaurantsRepository) : BaseObservable() {
 
     val loading: ObservableBoolean = ObservableBoolean(true)
+    val error: ObservableBoolean = ObservableBoolean(false)
     val empty: ObservableBoolean = ObservableBoolean(false)
 
-    @Inject
-    lateinit var repository: RestaurantsRepository
+    lateinit var view: SearchView
 
-    @Inject
-    lateinit var preferences: SharedPreferences
-
+    @VisibleForTesting
     private var previousLocation: Location? = null
-
-    init {
-        MainApp.component.inject(this)
-    }
 
     fun loadRestaurants(location: Location) {
         if (location.isNotTheSameAs(previousLocation)) {
@@ -45,6 +39,7 @@ class SearchViewModel(val view: SearchView) : BaseObservable() {
                         loading.set(false)
                     }, {
                         loading.set(false)
+                        error.set(true)
                         logError(it)
                     })
             previousLocation = location

@@ -26,7 +26,7 @@ class NetworkModule {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("http://192.168.0.108/whereislunch/api/")
+                .baseUrl("http://ec2-35-166-2-200.us-west-2.compute.amazonaws.com")
                 .build()
                 .create(VotingApi::class.java)
     }

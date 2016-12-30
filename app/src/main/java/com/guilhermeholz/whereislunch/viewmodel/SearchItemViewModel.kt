@@ -1,14 +1,12 @@
 package com.guilhermeholz.whereislunch.viewmodel
 
-import android.content.Context
-import android.content.Intent
 import android.databinding.BaseObservable
 import android.databinding.ObservableField
 import android.databinding.ObservableFloat
 import com.guilhermeholz.whereislunch.domain.model.Restaurant
-import com.guilhermeholz.whereislunch.ui.activities.RestaurantDetailActivity
+import com.guilhermeholz.whereislunch.ui.navigation.RestaurantNavigator
 
-class SearchItemViewModel(val context: Context) : BaseObservable() {
+class SearchItemViewModel(val navigator: RestaurantNavigator) : BaseObservable() {
 
     val title: ObservableField<String> = ObservableField()
     val thumb: ObservableField<String> = ObservableField()
@@ -26,10 +24,6 @@ class SearchItemViewModel(val context: Context) : BaseObservable() {
     }
 
     fun onClickItem() {
-        restaurantId?.let {
-            val intent = Intent(context, RestaurantDetailActivity::class.java)
-                    .putExtra(RestaurantDetailActivity.idExtraKey, it)
-            context.startActivity(intent)
-        }
+        restaurantId?.let { navigator.navigateToDetail(it) }
     }
 }

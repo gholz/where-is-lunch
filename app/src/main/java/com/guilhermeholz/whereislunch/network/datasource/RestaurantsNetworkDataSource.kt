@@ -119,5 +119,4 @@ class RestaurantsNetworkDataSource(val yelpApi: YelpApi, val votingApi: VotingAp
     }
 
     private fun getAddressLine(business: BusinessDetail) = "${business.location.address1}, ${business.location.city} ${business.location.country}"
-
 }

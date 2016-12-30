@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
+apply plugin: "kotlin-allopen"
 apply from: "../keys.gradle"
 
 android {
@@ -32,6 +33,10 @@ android {
 
 kapt {
     generateStubs true
+}
+
+allOpen {
+    annotation("com.guilhermeholz.whereislunch.utils.OpenForTesting")
 }
 
 dependencies {
@@ -72,14 +77,20 @@ dependencies {
     // Dates
     compile "com.jakewharton.threetenabp:threetenabp:1.0.4"
 
-    // Unit tests
-    testCompile "junit:junit:4.12"
-
     // Dagger
     compile "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
-    // Functional tests
+    // Robo Electric
+    testCompile "org.robolectric:robolectric:3.1.4"
+
+    // Mockito
+    testCompile "com.nhaarman:mockito-kotlin:1.1.0"
+
+    // Junit
+    testCompile "junit:junit:4.12"
+
+    // Espresso
     androidTestCompile("com.android.support.test.espresso:espresso-core:2.2.2", {
         exclude group: "com.android.support", module: "support-annotations"
     })

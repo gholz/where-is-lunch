@@ -6,19 +6,19 @@ import retrofit2.http.*
 import rx.Observable
 
 interface VotingApi {
-    @GET("votes.php")
+    @GET("/api/votes.php")
     fun getVotes(@Query("date") date: String): Observable<VotesResponse>
 
-    @GET("votes.php")
+    @GET("/api/votes.php")
     fun getVotesById(@Query("id") id: String, @Query("date") date: String): Observable<Vote>
 
     @FormUrlEncoded
-    @POST("votes.php")
+    @POST("/api/votes.php")
     fun vote(@Field("id") id: String, @Field("date") date: String): Observable<Vote>
 
-    @GET("winners.php")
+    @GET("/api/winners.php")
     fun getWinner(@Query("date") date: String): Observable<Vote>
 
-    @GET("winners.php")
+    @GET("/api/winners.php")
     fun getWinners(): Observable<VotesResponse>
 }

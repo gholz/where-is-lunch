@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import com.guilhermeholz.whereislunch.R
 import com.guilhermeholz.whereislunch.databinding.SearchItemBinding
 import com.guilhermeholz.whereislunch.domain.model.Restaurant
+import com.guilhermeholz.whereislunch.ui.navigation.RestaurantNavigator
 import com.guilhermeholz.whereislunch.viewmodel.SearchItemViewModel
 
 class SearchListAdapter(context: Context) : RecyclerView.Adapter<SearchListAdapter.SearchItemViewHolder>() {
 
     val inflater: LayoutInflater = LayoutInflater.from(context)
     val items: MutableList<Restaurant> = mutableListOf()
+    val navigator: RestaurantNavigator = RestaurantNavigator(context)
 
     override fun onBindViewHolder(holder: SearchItemViewHolder?, position: Int) {
         holder?.bind(items[position])
@@ -39,7 +41,7 @@ class SearchListAdapter(context: Context) : RecyclerView.Adapter<SearchListAdapt
 
     inner class SearchItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        val viewModel: SearchItemViewModel = SearchItemViewModel(view.context)
+        val viewModel: SearchItemViewModel = SearchItemViewModel(navigator)
         val binding: SearchItemBinding = DataBindingUtil.bind(view)
 
         init {

@@ -3,20 +3,24 @@ package com.guilhermeholz.whereislunch.ui.activities
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.guilhermeholz.whereislunch.MainApp
 import com.guilhermeholz.whereislunch.R
 import com.guilhermeholz.whereislunch.databinding.RestaurantDetailBinding
 import com.guilhermeholz.whereislunch.viewmodel.RestaurantDetailViewModel
+import javax.inject.Inject
 
 class RestaurantDetailActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var viewModel: RestaurantDetailViewModel
 
     companion object {
         val idExtraKey = "restaurant_id"
     }
 
-    private val viewModel = RestaurantDetailViewModel()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MainApp.component.inject(this)
         initBinding()
         retrieveExtras()
     }

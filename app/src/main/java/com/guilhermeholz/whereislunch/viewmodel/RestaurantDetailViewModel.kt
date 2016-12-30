@@ -4,16 +4,19 @@ import android.databinding.BaseObservable
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.databinding.ObservableFloat
+import android.support.annotation.VisibleForTesting
 import com.guilhermeholz.whereislunch.MainApp
 import com.guilhermeholz.whereislunch.domain.RestaurantsRepository
 import com.guilhermeholz.whereislunch.domain.model.RestaurantDetail
+import com.guilhermeholz.whereislunch.utils.OpenForTesting
 import com.guilhermeholz.whereislunch.utils.logError
 import org.threeten.bp.LocalTime
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import javax.inject.Inject
 
-class RestaurantDetailViewModel : BaseObservable() {
+@OpenForTesting
+class RestaurantDetailViewModel(val repository: RestaurantsRepository) : BaseObservable() {
 
     val title: ObservableField<String> = ObservableField()
     val image: ObservableField<String> = ObservableField()
@@ -26,14 +29,7 @@ class RestaurantDetailViewModel : BaseObservable() {
     val canVote: ObservableBoolean = ObservableBoolean(false)
     val isVotingClosed: ObservableBoolean = ObservableBoolean(false)
 
-    @Inject
-    lateinit var repository: RestaurantsRepository
-
     private var restaurant: RestaurantDetail? = null
-
-    init {
-        MainApp.component.inject(this)
-    }
 
     fun loadRestaurant(id: String) {
         canVote.set(repository.canVote(id))

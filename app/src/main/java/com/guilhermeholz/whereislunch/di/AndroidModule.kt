@@ -8,12 +8,24 @@ import com.guilhermeholz.whereislunch.domain.datasource.RestaurantsDataSource
 import com.guilhermeholz.whereislunch.network.VotingApi
 import com.guilhermeholz.whereislunch.network.YelpApi
 import com.guilhermeholz.whereislunch.network.datasource.RestaurantsNetworkDataSource
+import com.guilhermeholz.whereislunch.viewmodel.RestaurantDetailViewModel
+import com.guilhermeholz.whereislunch.viewmodel.SearchViewModel
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
 class AndroidModule(val context: Context) {
+
+    @Provides
+    fun providesSearchViewModel(preferences: SharedPreferences, repository: RestaurantsRepository):SearchViewModel {
+        return SearchViewModel(preferences, repository)
+    }
+
+    @Provides
+    fun providesRestaurantDetailViewModel(repository: RestaurantsRepository):RestaurantDetailViewModel {
+        return RestaurantDetailViewModel(repository)
+    }
 
     @Provides @Singleton
     fun provideRestaurantsRepository(dataSource: RestaurantsDataSource, preferences: SharedPreferences): RestaurantsRepository {
