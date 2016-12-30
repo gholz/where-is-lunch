@@ -26,7 +26,7 @@ This project uses:
 
 You can use Android Studio or Intellij to work with this repository.
 
-First thing you will need to compile this project is to get an [API Key from Yelp](http://developers.yelp.com). It will we used to connect to the service that will provide restaurants info. Then create a gradle file called keys.gradle in your the root of the project with your key and secret:
+First thing you will need to compile this project is to get an [API Key from Yelp](http://developers.yelp.com). It will we used to connect to the service that will provide restaurants info. Then create a gradle file called keys.gradle in the root of the project with your key and secret:
 
 ```gradle
 ext.yelp_client_id = '"YOUR_KEY"'
