@@ -9,7 +9,6 @@ This project is a simple sample app that display a list of restaurants nearby to
 The purpose of this project is to demontrate the use of some of the most recent technologies in the Android development world, this is reflected in a series of business rules being implemented on the application side when they would probably be more suitable for the backend.
 
 #Technologies
-
 This project uses:
 - the kotlin programing language
 - rxjava
@@ -22,6 +21,17 @@ This project uses:
 #Architecture
 
 The project uses the MVVM architecture powered by the native Android databinding and the repository pattern.
+
+##How to use this project
+
+You can use Android Studio or Intellij to work with this repository.
+
+First thing you will need to compile this project is to get an [API Key from Yelp](http://developers.yelp.com). It will we used to connect to the service that will provide restaurants info. Then create a gradle file called keys.gradle in your the root of the project with your key and secret:
+
+```gradle
+ext.yelp_client_id = '"YOUR_KEY"'
+ext.yelp_secret_key = '"YOUR_SECRET"'
+```
 
 #License
 
