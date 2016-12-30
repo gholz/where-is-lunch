@@ -1,8 +1,10 @@
 package com.guilhermeholz.whereislunch.network.model.yelp
 
 import com.google.gson.annotations.SerializedName
+import com.guilhermeholz.whereislunch.utils.OpenForTesting
 import android.location.Location as AndroidLocation
 
+@OpenForTesting
 class BusinessDetail(@SerializedName("id") val id: String,
                      @SerializedName("name") val name: String,
                      @SerializedName("image_url") val imageUrl: String,

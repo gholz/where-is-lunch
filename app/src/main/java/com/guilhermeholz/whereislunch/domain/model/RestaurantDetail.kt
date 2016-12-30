@@ -1,6 +1,9 @@
 package com.guilhermeholz.whereislunch.domain.model
 
-data class RestaurantDetail(val id: String,
+import com.guilhermeholz.whereislunch.utils.OpenForTesting
+
+@OpenForTesting
+class RestaurantDetail(val id: String,
                             val name: String,
                             val phone: String,
                             val image: String,

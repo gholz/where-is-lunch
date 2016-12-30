@@ -1,5 +1,7 @@
 package com.guilhermeholz.whereislunch.network.model.votes
 
 import com.google.gson.annotations.SerializedName
+import com.guilhermeholz.whereislunch.utils.OpenForTesting
 
-data class VotesResponse(@SerializedName("votes") val votes: List<Vote>)
+@OpenForTesting
+class VotesResponse(@SerializedName("votes") val votes: List<Vote>)

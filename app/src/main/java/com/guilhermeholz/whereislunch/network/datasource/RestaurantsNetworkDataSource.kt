@@ -2,6 +2,7 @@ package com.guilhermeholz.whereislunch.network.datasource
 
 import android.content.SharedPreferences
 import android.location.Location
+import android.support.annotation.VisibleForTesting
 import com.guilhermeholz.whereislunch.BuildConfig
 import com.guilhermeholz.whereislunch.domain.datasource.RestaurantsDataSource
 import com.guilhermeholz.whereislunch.domain.model.Restaurant
@@ -38,6 +39,7 @@ class RestaurantsNetworkDataSource(val yelpApi: YelpApi, val votingApi: VotingAp
     }
 
     override fun getRestaurant(id: String, date: String): Observable<RestaurantDetail> {
+
         return if (!isAuthenticated()) {
             authenticate().flatMap {
                 store(it)
@@ -52,7 +54,8 @@ class RestaurantsNetworkDataSource(val yelpApi: YelpApi, val votingApi: VotingAp
         return votingApi.vote(id, date).flatMap { getRestaurant(id, date) }
     }
 
-    private fun isAuthenticated(): Boolean = !authHeader.isEmpty() && expiration < Date().time
+    @VisibleForTesting
+    fun isAuthenticated(): Boolean = !authHeader.isEmpty() && expiration < Date().time
 
     private fun getRestaurantById(id: String, date: String): Observable<RestaurantDetail> {
         return yelpApi.getBusinessDetail(authHeader, id)
@@ -84,9 +87,8 @@ class RestaurantsNetworkDataSource(val yelpApi: YelpApi, val votingApi: VotingAp
         }
     }
 
-    private fun authenticate() = yelpApi.getAuthToken("client_credentials",
-            BuildConfig.YELP_CLIENT_ID,
-            BuildConfig.YELP_SECRET_KEY)
+    @VisibleForTesting
+    fun authenticate()  = yelpApi.getAuthToken("client_credentials", BuildConfig.YELP_CLIENT_ID, BuildConfig.YELP_SECRET_KEY)
 
     private fun store(authentication: AuthResponse) {
         authHeader = "Bearer ${authentication.accessToken}"
