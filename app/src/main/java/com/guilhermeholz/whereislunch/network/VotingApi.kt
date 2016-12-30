@@ -2,7 +2,6 @@ package com.guilhermeholz.whereislunch.network
 
 import com.guilhermeholz.whereislunch.network.model.votes.Vote
 import com.guilhermeholz.whereislunch.network.model.votes.VotesResponse
-import com.guilhermeholz.whereislunch.network.model.votes.WinnersResponse
 import retrofit2.http.*
 import rx.Observable
 
@@ -18,5 +17,8 @@ interface VotingApi {
     fun vote(@Field("id") id: String, @Field("date") date: String): Observable<Vote>
 
     @GET("winners.php")
-    fun getWinners(): Observable<WinnersResponse>
+    fun getWinner(@Query("date") date: String): Observable<Vote>
+
+    @GET("winners.php")
+    fun getWinners(): Observable<VotesResponse>
 }

@@ -9,10 +9,8 @@ import com.guilhermeholz.whereislunch.domain.model.RestaurantDetail
 import com.guilhermeholz.whereislunch.network.VotingApi
 import com.guilhermeholz.whereislunch.network.YelpApi
 import com.guilhermeholz.whereislunch.network.model.votes.Vote
-import com.guilhermeholz.whereislunch.network.model.votes.VotesResponse
 import com.guilhermeholz.whereislunch.network.model.yelp.AuthResponse
 import com.guilhermeholz.whereislunch.network.model.yelp.BusinessDetail
-import com.guilhermeholz.whereislunch.network.model.yelp.SearchResponse
 import rx.Observable
 import java.util.*
 
@@ -70,6 +68,22 @@ class RestaurantsNetworkDataSource(val yelpApi: YelpApi, val votingApi: VotingAp
                 }
     }
 
+    override fun getWinner(date: String): Observable<RestaurantDetail> {
+        var votes: Int = 0
+        return votingApi.getWinner(date).flatMap {
+            votes = it.amount
+            yelpApi.getBusinessDetail(it.id, date)
+        }.map {
+            RestaurantDetail(it.id,
+                    it.name,
+                    it.phone,
+                    it.imageUrl,
+                    it.rating,
+                    getAddressLine(it),
+                    votes)
+        }
+    }
+
     private fun authenticate() = yelpApi.getAuthToken("client_credentials",
             BuildConfig.YELP_CLIENT_ID,
             BuildConfig.YELP_SECRET_KEY)
@@ -84,22 +98,26 @@ class RestaurantsNetworkDataSource(val yelpApi: YelpApi, val votingApi: VotingAp
 
     private fun searchByLocation(location: Location, date: String): Observable<List<Restaurant>> {
         return yelpApi.search(authHeader, location.latitude, location.longitude)
-                .zipWith(votingApi.getVotes(date), {
+                .zipWith(votingApi.getVotes(date)) {
                     business, votes ->
-                    combine(business, votes).sortedByDescending(Restaurant::votes)
-                })
+                    val votesMap = votes.votes.associateBy(Vote::id)
+                    business.businesses.map {
+                        Restaurant(it.id,
+                                it.name,
+                                it.imageUrl,
+                                it.rating,
+                                votesMap[it.id]?.amount ?: 0)
+                    }
+                }
+                .zipWith(votingApi.getWinners()) {
+                    restaurants, winners ->
+                    val winnersMap = winners.votes.associateBy(Vote::id)
+                    restaurants.filter {
+                        !winnersMap.containsKey(it.id)
+                    }.sortedByDescending(Restaurant::votes)
+                }
     }
 
     private fun getAddressLine(business: BusinessDetail) = "${business.location.address1}, ${business.location.city} ${business.location.country}"
 
-    private fun combine(searchResponse: SearchResponse, votesResponse: VotesResponse): List<Restaurant> {
-        val votes = votesResponse.votes.associateBy(Vote::id)
-        return searchResponse.businesses.map {
-            Restaurant(it.id,
-                    it.name,
-                    it.imageUrl,
-                    it.rating,
-                    votes[it.id]?.amount ?: 0)
-        }
-    }
 }

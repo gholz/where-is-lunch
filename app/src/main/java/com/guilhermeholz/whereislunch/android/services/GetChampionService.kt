@@ -14,6 +14,7 @@ import com.guilhermeholz.whereislunch.MainApp
 import com.guilhermeholz.whereislunch.R
 import com.guilhermeholz.whereislunch.domain.RestaurantsRepository
 import com.guilhermeholz.whereislunch.domain.model.Restaurant
+import com.guilhermeholz.whereislunch.domain.model.RestaurantDetail
 import com.guilhermeholz.whereislunch.ui.activities.RestaurantDetailActivity
 import com.guilhermeholz.whereislunch.ui.activities.SearchActivity
 import com.guilhermeholz.whereislunch.utils.fill
@@ -34,11 +35,7 @@ class GetChampionService : IntentService("ChampionService") {
     }
 
     override fun onHandleIntent(intent: Intent?) {
-        val last: Location = Location("preferences")
-        last.fill(preferences.getString("lastLocation", "0,0"))
-        repository.getRestaurants(last)
-                .flatMap { Observable.from(it) }
-                .first()
+        repository.getWinner()
                 .subscribe({
                     sendNotification(it)
                 }, {
@@ -46,7 +43,7 @@ class GetChampionService : IntentService("ChampionService") {
                 })
     }
 
-    private fun sendNotification(restaurant: Restaurant?) {
+    private fun sendNotification(restaurant: RestaurantDetail?) {
         restaurant?.let {
             val intent = Intent(this, SearchActivity::class.java)
             intent.putExtra(RestaurantDetailActivity.idExtraKey, it.id)

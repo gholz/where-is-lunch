@@ -22,6 +22,10 @@ class RestaurantsRepository(val dataSource: RestaurantsDataSource, val preferenc
         return dataSource.getRestaurant(id, getCurrentDate())
     }
 
+    fun getWinner(): Observable<RestaurantDetail> {
+        return dataSource.getWinner(getCurrentDate())
+    }
+
     fun vote(restaurant: RestaurantDetail): Observable<RestaurantDetail> {
         val currentDate = getCurrentDate()
         preferences.edit().putBoolean(restaurant.id + currentDate, true).apply()
@@ -30,7 +34,7 @@ class RestaurantsRepository(val dataSource: RestaurantsDataSource, val preferenc
 
     fun canVote(id: String): Boolean = !isVotingClosed() && !preferences.contains(id + getCurrentDate())
 
-    fun isVotingClosed(): Boolean = LocalTime.now().isAfter(LocalTime.NOON.plusHours(1))
+    fun isVotingClosed(): Boolean = LocalTime.now().isAfter(LocalTime.NOON.plusMinutes(30))
 
     private fun getCurrentDate() = formatter.format(LocalDate.now())
 

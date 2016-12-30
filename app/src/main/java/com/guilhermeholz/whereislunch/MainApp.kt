@@ -21,9 +21,6 @@ class MainApp : Application() {
         lateinit var component: AppComponent
     }
 
-    @Inject
-    lateinit var preferences:SharedPreferences
-
     override fun onCreate() {
         super.onCreate()
         component = DaggerAppComponent.builder()
@@ -34,7 +31,6 @@ class MainApp : Application() {
     }
 
     private fun init() {
-        component.inject(this)
         AndroidThreeTen.init(this)
         scheduleAlarm()
     }
@@ -46,7 +42,7 @@ class MainApp : Application() {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()
         calendar.set(Calendar.HOUR_OF_DAY, 12)
-        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.MINUTE, 30)
 
         val manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pending)
