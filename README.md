@@ -8,7 +8,11 @@ This project is a simple sample app that display a list of restaurants nearby to
 
 The purpose of this project is to demontrate the use of some of the most recent technologies in the Android development world, this is reflected in a series of business rules being implemented on the application side when they would probably be more suitable for the backend.
 
-#Technologies
+##Architecture
+
+The project uses the MVVM architecture powered by android databinding and the repository pattern.
+
+##Technologies
 This project uses:
 - the kotlin programing language
 - rxjava
@@ -17,10 +21,6 @@ This project uses:
 - dagger2 for dependency injection
 - Junit + Mockito + Roboelectric for unit testing
 - Espresso for functional testing
-
-#Architecture
-
-The project uses the MVVM architecture powered by the native Android databinding and the repository pattern.
 
 ##How to use this project
 
@@ -48,6 +48,3 @@ ext.yelp_secret_key = '"YOUR_SECRET"'
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
-
